@@ -1,9 +1,9 @@
-export default function Example() {
+export default function Home() {
     return (
-      <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div id="home" className="relative isolate px-6 pt-14 lg:px-8">
        
         <video
-          src="/video/1826896-hd_1920_1080_24fps.mp4"
+          src="video/Slowvid.mp4"  /*  video/ny.mp4 */
           autoPlay
           loop
           muted

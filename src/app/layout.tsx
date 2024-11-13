@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "@/components/header/page";
+import Footer from "@/components/footer/page";
 
 export const metadata: Metadata = {
   title: "MEF-Global Solution",
@@ -14,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <Header/>
         {children}
+      <Footer/>  
       </body>
     </html>
   );

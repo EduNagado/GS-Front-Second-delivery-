@@ -4,10 +4,11 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 const navigation = [
-  { name: "Início", href: "/" },
-  { name: "Sobre nós", href: "#sobre" },
-  { name: "Áreas de Atuação", href: "#expertise" },
-  { name: "Depoimentos", href: "#avaliation" },
+  { name: "Início", href: "/home" },
+  { name: "Energia para Todos", href: "/energy" },
+  /* Conteúdo: Mostrar a missão de levar energia renovável a regiões que carecem de infraestrutura energética, destacando o impacto social positivo. Incluir informações sobre o modelo de investimento e os retornos potenciais.*/
+  { name: "Nossa Solução", href: "/solution" },
+  { name: "Sobre nós", href: "/team" },
 ];
 
 export default function Header() {
@@ -63,7 +64,7 @@ export default function Header() {
           onClose={setMobileMenuOpen}
         >
           <div className="fixed inset-0 z-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-[#976d14] px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-[#1F2937] px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
