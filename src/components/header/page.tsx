@@ -5,9 +5,8 @@ import { useState } from "react";
 
 const navigation = [
   { name: "Início", href: "/home" },
-  { name: "Energia para Todos", href: "/energy" },
-  /* Conteúdo: Mostrar a missão de levar energia renovável a regiões que carecem de infraestrutura energética, destacando o impacto social positivo. Incluir informações sobre o modelo de investimento e os retornos potenciais.*/
   { name: "Nossa Solução", href: "/solution" },
+  { name: "Energia para Todos", href: "/energy" },
   { name: "Sobre nós", href: "/team" },
 ];
 
