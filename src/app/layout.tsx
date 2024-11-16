@@ -1,7 +1,8 @@
+// layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/header/page";
-import Footer from "@/components/footer/page";
+import ClientProviders from "./clientProviders/ClientProviders";
+
 
 export const metadata: Metadata = {
   title: "MEF-Global Solution",
@@ -15,10 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script src="https://accounts.google.com/gsi/client" async></script>
+      </head>
       <body>
-      <Header/>
-        {children}
-      <Footer/>  
+        <ClientProviders>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );
