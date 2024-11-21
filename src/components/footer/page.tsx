@@ -14,8 +14,7 @@ export default function Footer(){
                   <img src='/images/logo-min.png' className='w-40' alt='typefinance logo'/>
                 </div>
                 <p className="max-w-xs mt-4 text-gray-500">
-                   {/*  Comenta algo de baixo da logo  */}
-                  Get started with your NextJS project right away.
+                   Our social networks.
                 </p>
                 <ul className="flex gap-6 mt-8">
                   <li>
@@ -60,28 +59,28 @@ export default function Footer(){
               </div>
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
                 <div>
-                  <p className="font-medium">Services</p>
+                  <p className="font-medium">Our Services</p>
                   <nav aria-label="Footer Navigation - Services" className="mt-6">
                     <ul className="space-y-4 text-sm">
                       <li>
-                        <Link href="/asseteer" className="text-gray-300 transition hover:opacity-75">
-                          Asseteer Tool
+                        <Link href="/solution" className="text-gray-300 transition hover:opacity-75">
+                          Conheça nossa solução 
                         </Link>
                       </li>
                       <li>
-                        <Link href="/sip-calculator" className="text-gray-300 transition hover:opacity-75">
-                          SIP Calculator
+                        <Link href="/ALTERAR" className="text-gray-300 transition hover:opacity-75">
+                          Invista com a MEF
                         </Link>
                       </li>
                     </ul>
                   </nav>
                 </div>
                 <div>
-                  <p className="font-medium ">Company</p>
+                  <p className="font-medium ">Energy for all </p>
                   <nav aria-label="Footer Navigation - Company" className="mt-6">
                     <ul className="space-y-4 text-sm">
                       <li>
-                        <Link href="/about" className="text-gray-300 transition hover:opacity-75">
+                        <Link href="/energy" className="text-gray-300 transition hover:opacity-75">
                           About
                         </Link>
                       </li>
@@ -89,50 +88,41 @@ export default function Footer(){
                   </nav>
                 </div>
                 <div>
-                  <p className="font-medium ">Helpful Links</p>
+                  <p className="font-medium ">Team</p>
                   <nav aria-label="Footer Navigation - Company" className="mt-6">
                     <ul className="space-y-4 text-sm">
                       <li>
-                        <Link href="/contact" className="text-gray-300 transition hover:opacity-75">
-                          Contact
+                        <Link href="/team" className="text-gray-300 transition hover:opacity-75">
+                          Eduardo Nagado 
                         </Link>
                       </li>
                       <li>
-                        <Link href="/blog" className="text-gray-300 transition hover:opacity-75">
-                          Blog
+                        <Link href="/team" className="text-gray-300 transition hover:opacity-75">
+                          Felipe Maciel
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/team" className="text-gray-300 transition hover:opacity-75">
+                          Mateus Cezar
                         </Link>
                       </li>
                     </ul>
                   </nav>
                 </div>
                 <div>
-                  <p className="font-medium ">Legal</p>
+                  <p className="font-medium ">Contact us</p>
                   <nav aria-label="Footer Navigation - Legal" className="mt-6">
                     <ul className="space-y-4 text-sm">
                       <li>
-                        <Link href="/disclaimer" className="text-gray-300 transition hover:opacity-75">
-                          Disclaimer
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/privacy-policy" className="text-gray-300 transition hover:opacity-75">
-                          Privacy Policy
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/terms" className="text-gray-300 transition hover:opacity-75">
-                          Terms and conditions
-                        </Link>
+                        <p className="text-gray-300 transition hover:opacity-75">
+                          mef@solution.com.br
+                        </p>
                       </li>
                     </ul>
                   </nav>
                 </div>
               </div>
             </div>
-            <p className="text-xs text-gray-500">
-                {/* Alterar  */}
-              NextJS template created with  by <Link href="https://soumyamondal.com" className="text-gray-500 transition hover:opacity-75">Soumya Mondal</Link>
-            </p>
           </div>
         </section>
       </footer>

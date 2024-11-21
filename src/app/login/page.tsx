@@ -1,15 +1,18 @@
 'use client';
 import Button from "@/components/Button";
-import { setCookie } from "@/components/Cookie";
 import Input from "@/components/Input/index";
-import useForm, { FormState } from "@/components/hooks/use-form";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from 'react';
 import '../login/login.css';
 /* Google */
 import { GoogleLogin } from '@react-oauth/google';
+/* Cadastro e Login*/
+import { auth, db } from '../dashboard/firebase/firebase';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, query, where, getDocs,getDoc , collection } from 'firebase/firestore';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from "next/router";
 
-
+/* O codigo ta todo ok, mas nn foi testado pq a apikey nn foi mandada: ainda preciso saber como transforma e depois ver a aba de DashboardInvestimento */
 
 
 export default function Login() {
@@ -70,152 +73,121 @@ export default function Login() {
       /* Google */
 
 
-    const [isActive, setIsActive] = useState(false);
-    const router = useRouter();
+    /* Config de CADASTRO  */
+      const navigate = useNavigate();
+      const [userType, setUserType] = useState('cliente');
+      const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+      });
+      const [error, setError] = useState<string>('');
     
-    // Referências para cada formulário
-    const registerFormRef = useRef<HTMLFormElement>(null);
-    const loginFormRef = useRef<HTMLFormElement>(null);
+      const handleChange = (e:any) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+      };
     
-    const initialRegisterForm = {
-      email: '',
-      senha: '',
-    };
-  
-    const {
-      data: {
-        email,
-        senha,
-      },
-      loadingSubmit,
-      handleChange,
-      handleSubmit,
-      errorsCount,
-    } = useForm(
-      registerFormRef,
-      initialRegisterForm,
-      registerCallback,
-      registerErrorCallback
-    );
-  
-    async function registerErrorCallback(error: Error) {
-      if (error.cause && Object.keys(error.cause).length) {
-        let message = "Erro ao realizar registro:\n\n"
-        for (const key in error.cause) {
-          const causes = error.cause as { [key: string]: string }
-          message += `- ${causes[key]}\n`
-        }
-        return window.alert(message);
-      }
-      return window.alert(error.message);
-    }
-  
-    async function registerCallback(values: FormState) {
-      try {
-        const request = await fetch(`/api/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: values.email,
-            senha: values.senha,
-          }),
-        });
-  
-        // Verifique se a resposta foi bem-sucedida
-        if (!request.ok) {
-          const errorResponse = await request.json();
-          throw new Error(errorResponse.message || 'Erro ao realizar registro');
-        }
-  
-        const response = await request.json();
-  
-        if (!response.token) {
-          throw new Error(response.message);
-        }
-  
-        setCookie('token', response.token);
-        localStorage.setItem('token', response.token);
-        router.push('/');
-  
-      } catch (error) {
-        if (error instanceof Error) {
-          return registerErrorCallback(error);
-        }
-        return registerErrorCallback(new Error('Erro ao realizar registro'));
-      }
-    }
-  
-    const initialLoginForm = {
-      email: '',
-      senha: ''
-    };
-  
-    const {
-      data: {
-        email: loginEmail,
-        senha: loginSenha
-      },
-      loadingSubmit: loadingLogin,
-      handleChange: handleLoginChange,
-      handleSubmit: handleLoginSubmit,
-      errorsCount: loginErrorsCount
-    } = useForm(
-      loginFormRef,
-      initialLoginForm,
-      loginCallback,
-      loginErrorCallback
-    );
-  
-    async function loginErrorCallback(error: Error) {
-      if (error.cause && Object.keys(error.cause).length) {
-        let message = 'Erro ao realizar login:\n\n';
-        for (const key in error.cause) {
-          const causes = error.cause as { [key: string]: string }
-          message += `- ${causes[key]}\n`;
-        }
-        return window.alert(message);
-      }
-      return window.alert(error.message);
-    }
-  
-    async function loginCallback(values: FormState) {
-      try {
-        const request = await fetch(`/api/login?email=${encodeURIComponent(values.email)}&senha=${encodeURIComponent(values.senha)}`, {
-          method: 'GET',
-        });
-        
-        // Verifique se a resposta foi bem-sucedida
-        if (!request.ok) {
-          const errorResponse = await request.json();
-          throw new Error(errorResponse.message || 'Erro ao realizar login');
-        }
-        
-        const response = await request.json();
-  
-        if (!response.token || !response.codigo) {
-          throw new Error(response.message);
-        }
-  
-        setCookie('token', response.token);
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('codigo', response.codigo);
-        router.push('/');
-  
-      } catch (error) {
-        if (error instanceof Error) {
-          return loginErrorCallback(error);
-        }
-        return loginErrorCallback(new Error('Erro ao realizar login'));
-      }
-    }
+   
+      const handleSubmit = async (e:any) => {
+        e.preventDefault();
+        const { email, password} = formData;
     
+        try {
+          // Check if the user already exists in the database
+          const usersRef = collection(db, 'users');
+          const q = query(usersRef, where('email', '==', email));
+          const querySnapshot = await getDocs(q);
+    
+          if (!querySnapshot.empty) {
+            setError('User with this email already exists.');
+            return;
+          }
+    
+          // Create the new user
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+    
+          // Prepare role-specific data for Firestore
+          let userDocData = {
+            email,
+            userType,
+          };
+    
+          if (userType === 'organization') {
+            userDocData = {
+              ...userDocData,
+            };
+          } else if (userType === 'cliente') {
+            userDocData = {
+              ...userDocData
+            };
+          }
+    
+          // Save the user details in Firestore
+          await setDoc(doc(db, 'users', user.uid), userDocData);
+    
+          console.log('User registered and data saved:', userDocData);
+          navigate('/login'); // Redirect to login page after successful signup
+        } catch (errorr:any) {
+          console.error('Error during registration:', errorr.message);
+          setError('Error during registration: ' + errorr.message);
+        }
+      };
+    /* Config de CADASTRO */  
+
+    /* Config de LOGIN */   
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      const [loading, setLoading] = useState(false);
+      const [message, setMessage] = useState('');
+      
+
+      const handleSubmitt = async (e:any) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage('');
+
+        try {
+          // Authenticate the user with Firebase Auth
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+
+          // Check if user data exists in Firestore
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            // User data exists in Firestore
+            navigate('/dashboard'); // Navigate to dashboard (adjust path if necessary)
+          } else {
+            // User data does not exist
+            setMessage('Account not found. Please create an account.');
+          }
+        } catch (error:any) {
+          // Handle specific Firebase Auth errors for better feedback
+          if (error.code === 'auth/wrong-password') {
+            setMessage('Incorrect password. Please try again.');
+          } else if (error.code === 'auth/user-not-found') {
+            setMessage('No account found with this email. Please create an account.');
+          } else {
+            setMessage('Login failed. Please check your credentials.');
+          }
+          console.error('Error during login:', error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const [isActive, setIsActive] = useState(false);
+      const router = useRouter();
+    /* Config de LOGIN */  
   
     return (
       <>
         <section>
-          <div className={`container ${isActive ? 'active' : ''}`} id="container">
-            <div className={`form-container sign-up ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-              <form onSubmit={handleSubmit} ref={registerFormRef} noValidate>
+          <div id="container">
+            <div className={`form-container sign-up  'opacity-100' : 'opacity-0'}`}>
+              <form onSubmit={handleSubmit} >
                 <h1>Criar Conta</h1>
                 <span>Use seu e-mail para registro</span>
                 <Input
@@ -223,8 +195,8 @@ export default function Login() {
                   name="email"
                   id="email"
                   placeholder="E-mail"
-                  value={email}
-                  handleChange={(_, e) => handleChange(e)}
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                 />
                 <Input
@@ -233,8 +205,8 @@ export default function Login() {
                   id="senha"
                   placeholder="Senha"
                   minLength={6}
-                  value={senha}
-                  handleChange={(_, e) => handleChange(e)}
+                  value={formData.password}
+                  onChange={handleChange}
                   required
                 />
                 
@@ -250,13 +222,13 @@ export default function Login() {
                   text="continue_with"
                 />      
 
-                <Button type="submit" disabled={loadingSubmit || !!errorsCount || !registerFormRef.current}>
-                  {loadingSubmit ? "Carregando..." : "Cadastrar"}
+                <Button type="submit" >
+                  Cadastrar
                 </Button>
               </form>
             </div>
-            <div className={`form-container sign-in ${isActive ? 'opacity-0' : 'opacity-100'}`}>
-              <form onSubmit={handleLoginSubmit} ref={loginFormRef} noValidate>
+            <div className={`form-container sign-in  'opacity-0' : 'opacity-100'}`}>
+              <form onSubmit={handleSubmitt} >
                 <h1>Login</h1>
                 <Input
                   label='E-mail'
@@ -264,8 +236,8 @@ export default function Login() {
                   name='email'
                   id='email'
                   placeholder='E-mail'
-                  value={loginEmail}
-                  handleChange={(_, e) => handleLoginChange(e)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
                 <Input
@@ -275,8 +247,8 @@ export default function Login() {
                   id='senha'
                   placeholder='Senha'
                   minLength={6}
-                  value={loginSenha}
-                  handleChange={(_, e) => handleLoginChange(e)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
                 
@@ -294,8 +266,8 @@ export default function Login() {
 
 
                 <a href="#">Esqueceu sua Senha?</a>
-                <Button type="submit" disabled={loadingLogin || !!loginErrorsCount || !loginFormRef.current}>
-                  {loadingLogin ? 'Carregando...' : 'Entrar'}
+                <Button type="submit">
+                  Entrar
                 </Button>
               </form>
             </div>
@@ -303,12 +275,12 @@ export default function Login() {
               <div className="toggle">
                 <div className="toggle-panel toggle-left">
                   <h1>Bem-vindo de Volta!</h1>
-                  <p>Insira seus dados pessoais para usar todos os recursos do site</p>
+                  <p>Faça login para acessar a área de investimentos e aproveitar nossos recursos.</p>
                   <button onClick={() => setIsActive(false)}>Entrar</button>
                 </div>
                 <div className="toggle-panel toggle-right">
-                  <h1>Olá, Amigo!</h1>
-                  <p>Registre-se com seus dados pessoais para usar todos os recursos do site</p>
+                  <h1>Bem-vindo à nossa plataforma!</h1>
+                  <p>Crie sua conta agora para começar a investir com a gente.</p>
                   <button onClick={() => setIsActive(true)}>Cadastrar</button>
                 </div>
               </div>

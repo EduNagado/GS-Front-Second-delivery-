@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientProviders from "./clientProviders/ClientProviders";
+import Header from "@/components/header/page";
+import Footer from "@/components/footer/page";
 
 
 export const metadata: Metadata = {
@@ -20,9 +22,11 @@ export default function RootLayout({
         <script src="https://accounts.google.com/gsi/client" async></script>
       </head>
       <body>
-        <ClientProviders>
-          {children}
-        </ClientProviders>
+        <Header/>
+          <ClientProviders>
+            {children}
+          </ClientProviders>
+        <Footer/>
       </body>
     </html>
   );
