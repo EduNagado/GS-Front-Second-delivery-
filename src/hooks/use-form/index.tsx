@@ -17,7 +17,7 @@ export default function useForm(
   initialState: FormState,
   submitCallback: SubmitCallbackFunction,
   errorCallback?: (error: Error) => Promise<void>,
-  setCustomErrors?: SetCustomErrorsFunction,
+  setCustomErrors?: SetCustomErrorsFunction, 
 ) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FormState>(initialState);
@@ -44,7 +44,7 @@ export default function useForm(
 
     const newErrors: ErrorsState = {};
     if (!isFormValid) {
-      const entries = Array.from(formData.entries());
+      const entries = Array.from(formData.entries()); 
       for (const [name] of entries) {
         const element = form.elements.namedItem(name);
         if (element instanceof HTMLInputElement) {

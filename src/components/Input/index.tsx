@@ -6,6 +6,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   handleChange?: (value: string, e: ChangeEvent<HTMLInputElement>) => void
   label?: ReactNode
   customError?: string | null
+  
 }
 
 export default function Input({ handleChange, disabled, readOnly, className = '', label = '', customError = '', ...props }: InputProps) {

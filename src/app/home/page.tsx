@@ -1,7 +1,9 @@
+import Header from "@/components/header/page";
 import Link from "next/link";
 
 export default function Home() {
     return (
+    
       <div id="home" className="relative isolate px-6 pt-14 lg:px-8">
        
         <video
@@ -37,6 +39,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      
     );
   }
   

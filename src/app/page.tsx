@@ -3,8 +3,8 @@ import Header from "@/components/header/page";
 import Home from "./home/page";
 import Team from "./team/page";
 import Login from "./login/page";
-import Investidor from "./dashboard/page";
-import Dashboard from "./dashboard/page";
+import Sidebar from "./dashboard/sidebar/page";
+import HeaderDashboard from "./dashboard/headerdashboard/page";
 
 
 /* npm install react-icons */
@@ -22,7 +22,7 @@ export default function App() {
   return (
     <>
     
-    <Dashboard/>
+    
     
 
     
