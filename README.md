@@ -45,7 +45,7 @@ Os pacotes a seguir foram instalados para atender às necessidades do projeto:
   ```bash
   npm install framer-motion
 
-- `@react-oauth/google`: Ferramenta para integração com autenticação Google OAuth
+- `@react-oauth/google`: Ferramenta para integração com autenticação Google OAuth.
   ```bash
  npm install @react-oauth/google
 
