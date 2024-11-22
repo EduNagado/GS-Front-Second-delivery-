@@ -21,12 +21,7 @@ import HeaderDashboard from "./dashboard/headerdashboard/page";
 export default function App() {
   return (
     <>
-    
-    
-    
-
-    
-    
+    <Home/>
   
     </>
     
