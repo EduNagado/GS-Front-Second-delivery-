@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MEF - Energy4future
 
-## Getting Started
+**MEF - Energy4future** é uma plataforma inovadora que mapeia locais sem energia elétrica em São Paulo, conectando esses pontos a investidores e empresas de energia locais interessados em implementar projetos de energia limpa. Com essa solução, promovemos um ecossistema colaborativo que transforma a vida de comunidades isoladas e oferece novas oportunidades através da energia sustentável.
 
-First, run the development server:
+A plataforma fornece geolocalização e informações detalhadas sobre o impacto social e ambiental de cada projeto, garantindo transparência e promovendo um desenvolvimento sustentável. Além disso, oferece um canal para investidores e empresas de energia selecionarem áreas estratégicas para instalar usinas de energia solar, contribuindo para a criação de um mercado de energia eficiente e inclusivo.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Estrutura do Projeto
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A estrutura do sistema está organizada da seguinte maneira:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **src**: Contém a maior parte do código fonte do projeto.
+  - **app**: Contém as principais páginas e funcionalidades do site, incluindo:
+    - **dashboard**: Página com as funcionalidades do painel principal do sistema.
+      - **headerdashboard**: Contém o cabeçalho do painel.
+      - **investimento**: Subpágina para gerenciamento de investimentos.
+      - **sidebar**: Implementação da barra lateral de navegação.
+    - **energy**: Página relacionada aos projetos de energia.
+    - **googleLoginButton**: Implementação do botão de login via Google.
+    - **home**: Página inicial do sistema.
+    - **login**: Página que contém as funcionalidades de login.
+    - **solution**: Detalha as soluções oferecidas pela plataforma.
+    - **team**: Informações sobre a equipe e parceiros do projeto.
+  - **components**: Contém componentes reutilizáveis, como:
+    - **Button**: Implementação de botões padrão.
+    - **footer**: Rodapé do sistema.
+    - **header**: Cabeçalho genérico utilizado em múltiplas páginas.
+  - **hooks**: Implementações de hooks personalizados para gerenciamento de estado e lógica específica.
+  - **globals.css**: Define a estilização global do sistema.
+  - **layout.tsx**: Configuração global, incluindo SEO, fontes e estilos consistentes.
+  - **page.tsx**: Arquivo principal para implementação das páginas do sistema.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pacotes Instalados
 
-## Learn More
+Os pacotes a seguir foram instalados para atender às necessidades do projeto:
 
-To learn more about Next.js, take a look at the following resources:
+- `@heroicons/react`: Pacote de ícones para enriquecer a interface visual do site.
+  ```bash
+  npm install @heroicons/react
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `react-icons`: Uma biblioteca com diversos ícones para uso geral.
+  ```bash
+  npm install react-icons
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `framer-motion`: Biblioteca para criar animações fluídas e interativas.
+  ```bash
+  npm install framer-motion
 
-## Deploy on Vercel
+- `@react-oauth/google`: Ferramenta para integração com autenticação Google OAuth
+  ```bash
+ npm install @react-oauth/google
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `jwt-decode`: Utilizado para decodificar tokens JWT.
+  ```bash
+ npm install jwt-decode
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `react-router-dom`: Biblioteca para gerenciamento de rotas na aplicação.
+  ```bash
+  npm install react-router-dom
